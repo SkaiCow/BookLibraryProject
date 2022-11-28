@@ -1,22 +1,28 @@
 from tkinter import *
 from tkinter import ttk
-
+from FileManager import addRecord
 def popAddWin(win):
     top= Toplevel(win)
     top.geometry("150x170")
     top.title("Add Book Window")
-    Label(top, text= "ISBN", font=('Mistral 12 bold')).pack(anchor="w", padx=10)
-
-    Entry(top).pack(anchor="w", padx=10)
-    Label(top, text= "Author", font=('Mistral 12 bold')).pack(anchor="w", padx=10)
-    Entry(top).pack(anchor="w", padx=10)
-    Label(top, text= "Book Title", font=('Mistral 12 bold')).pack(anchor="w", padx=10)
-    Entry(top).pack(anchor="w", padx=10)
-    def addRecord():
-        #add data to file. this will probably go else where
-        print("sending data...")
+    def on_closing():
+        print("cancel add record")
         top.destroy()
-    Button(top, text="Add", command=addRecord).pack(padx=10)
+    top.protocol("WM_DELETE_WINDOW", on_closing)
+    Label(top, text= "ISBN", font=('Mistral 12 bold')).pack(anchor="w", padx=10)
+    isbn = StringVar()
+    Entry(top, textvariable=isbn).pack(anchor="w", padx=10)
+    Label(top, text= "Author", font=('Mistral 12 bold')).pack(anchor="w", padx=10)
+    author = StringVar()
+    Entry(top, textvariable=author).pack(anchor="w", padx=10)
+    Label(top, text= "Book Title", font=('Mistral 12 bold')).pack(anchor="w", padx=10)
+    title = StringVar()
+    Entry(top, textvariable=title).pack(anchor="w", padx=10)
+    def sendRecord():
+        print("sending data...")
+        addRecord(isbn.get(), author.get(), title.get())
+        top.destroy()
+    Button(top, text="Add", command=sendRecord).pack(padx=10)
 
 
 def placeActions(root):
