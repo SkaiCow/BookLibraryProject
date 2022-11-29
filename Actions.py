@@ -20,8 +20,7 @@ def popAddWin(app):
     title = StringVar()
     Entry(top, textvariable=title).pack(anchor="w", padx=10)
     def sendRecord():
-        print("sending data...")
-        addRecord(isbn.get(), author.get(), title.get())
+        addRecord(app, isbn.get(), author.get(), title.get())
         app.loadRecords()
         top.destroy()
     Button(top, text="Add", command=sendRecord).pack(padx=10)

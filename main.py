@@ -2,19 +2,26 @@ from tkinter import *
 from tkinter import ttk
 from SearchManager import *
 from Actions import *
-from FileManager import getAllRecords
+from FileManager import *
 from Styles import loadStyles
 
 class app:
     def __init__(self):
         #app data
         self.selectedRecord = {}
+        self.AVAIL = []
+        self.indexIsbnList = loadIsbnIndexFile()
+        self.indexTitleList = loadTitleIndexFile()
 
         self.root = Tk()
         self.root.geometry("600x400")
         self.root.title('Book Library')
         self.root.columnconfigure(0, weight=1)
         self.root.rowconfigure(0, weight=1)
+        def on_closing():
+            writeToIndexfile(self.indexIsbnList, self.indexTitleList)
+            self.root.destroy()
+        self.root.protocol("WM_DELETE_WINDOW", on_closing)
 
         loadStyles(self.root)
 

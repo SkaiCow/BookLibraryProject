@@ -1,3 +1,1 @@
-0123456789me              book                    
-6378294193William L.      Very Cool Book          
-9780140444Karl Marx       Manifesto of the Communi
+1234567890William L.      Very Cool Book          
