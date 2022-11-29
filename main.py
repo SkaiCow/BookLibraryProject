@@ -4,22 +4,6 @@ from SearchManager import *
 from Actions import *
 from FileManager import getAllRecords
 
-
-"""recordBox = ttk.Frame(mainF, height=20)
-recordBox.pack(fill="x")
-ttk.Label(recordBox, text="ISBN").pack(side="left", anchor="w", expand=True, fill="both")
-ttk.Label(recordBox, text="Author").pack(side="left", anchor="w", expand=True, fill="both")
-ttk.Label(recordBox, text="Book Title").pack(side="left", anchor="w", expand=True, fill="both")
-#record Box
-recordBox = ttk.Frame(mainF, height=20)
-recordBox.pack(fill="x")
-ttk.Label(recordBox, text="0717802418").pack(side="left", anchor="w", expand=True, fill="both")
-ttk.Label(recordBox, text="Karl Marx").pack(side="left", anchor="w", expand=True, fill="both")
-ttk.Label(recordBox, text="The Communist Manifesto").pack(side="left", anchor="w", expand=True, fill="both")
-
-#ttk.Style().configure("TFrame", background="#6d6875")
-#ttk.Style().configure("TLabel", background="#6d6875", foreground="#e5989b")"""
-
 class app:
     def __init__(self):
         self.root = Tk()
@@ -35,23 +19,22 @@ class app:
         ttk.Label(recordBox, text="ISBN").pack(side="left", anchor="w", expand=True, fill="both")
         ttk.Label(recordBox, text="Author").pack(side="left", anchor="w", expand=True, fill="both")
         ttk.Label(recordBox, text="Book Title").pack(side="left", anchor="w", expand=True, fill="both")
+        self.recordContainer = ttk.Frame(self.mainF)
+        self.recordContainer.pack(expand=True, fill="both")
         self.loadRecords()
 
         self.root.mainloop()
     def loadRecords(self):
-        for item in self.mainF.winfo_children():
-            item.destroy()
-        recordBox = ttk.Frame(self.mainF, height=20)
-        recordBox.pack(fill="x")
-        ttk.Label(recordBox, text="ISBN").pack(side="left", anchor="w", expand=True, fill="both")
-        ttk.Label(recordBox, text="Author").pack(side="left", anchor="w", expand=True, fill="both")
-        ttk.Label(recordBox, text="Book Title").pack(side="left", anchor="w", expand=True, fill="both")
+        self.clearRecords()
         for book in getAllRecords():
-            recordBox = ttk.Frame(self.mainF, height=20)
+            recordBox = ttk.Frame(self.recordContainer, height=20)
             recordBox.pack(fill="x")
-            ttk.Label(recordBox, text=book[0]).pack(side="left", anchor="w", expand=True, fill="both")
-            ttk.Label(recordBox, text=book[1]).pack(side="left", anchor="w", expand=True, fill="both")
-            ttk.Label(recordBox, text=book[2]).pack(side="left", anchor="w", expand=True, fill="both")
+            ttk.Label(recordBox, text=book[0], justify="left", background="blue").pack(side="left", expand=True)
+            ttk.Label(recordBox, text=book[1], justify="left", background="red").pack(side="left", expand=True)
+            ttk.Label(recordBox, text=book[2], justify="left", background="green").pack(side="left", expand=True)
+    def clearRecords(self):
+        for item in self.recordContainer.winfo_children():
+            item.destroy()
 
 
 if __name__ == "__main__":
