@@ -1,8 +1,8 @@
 from tkinter import *
 from tkinter import ttk
 from FileManager import addRecord
-def popAddWin(win):
-    top= Toplevel(win)
+def popAddWin(app):
+    top= Toplevel(app.root)
     top.geometry("150x170")
     top.title("Add Book Window")
     def on_closing():
@@ -21,13 +21,14 @@ def popAddWin(win):
     def sendRecord():
         print("sending data...")
         addRecord(isbn.get(), author.get(), title.get())
+        app.loadRecords()
         top.destroy()
     Button(top, text="Add", command=sendRecord).pack(padx=10)
 
 
-def placeActions(root):
-    sideF = ttk.Frame(root)
+def placeActions(app):
+    sideF = ttk.Frame(app.root)
     sideF.pack(side="right", fill="both")
     Label(sideF, text="Actions").pack(ipadx=12, ipady=4)
-    ttk.Button(sideF, text="Add", command=lambda: popAddWin(root)).pack()
+    ttk.Button(sideF, text="Add", command=lambda: popAddWin(app)).pack()
     ttk.Button(sideF, text="Delete").pack()

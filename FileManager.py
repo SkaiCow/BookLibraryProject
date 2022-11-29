@@ -20,3 +20,18 @@ def findRecordByIsbn(isbn):
             break
         recordNum += 1
     fl.close()
+
+def getAllRecords():
+    fl = open("./data/BookRecords.txt", "r")
+    recordNum = 0
+    records =[]
+    while True:
+        temp = fl.readline()
+        data = [temp[:10], temp[10:26].strip(), temp[26:51].strip()]
+        if temp == "":
+            print("Record doesn't exist")
+            break
+        print(data)
+        records.append(data)
+    fl.close()
+    return records
