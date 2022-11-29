@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from FileManager import addRecord
+
 def popAddWin(app):
     top= Toplevel(app.root)
     top.geometry("150x170")
@@ -25,10 +26,15 @@ def popAddWin(app):
         top.destroy()
     Button(top, text="Add", command=sendRecord).pack(padx=10)
 
+def deleteRecord(app):
+    if app.selectedRecord != {}:
+        print("delete the record")
+
+
 
 def placeActions(app):
     sideF = ttk.Frame(app.root)
-    sideF.pack(side="right", fill="both")
-    Label(sideF, text="Actions").pack(ipadx=12, ipady=4)
-    ttk.Button(sideF, text="Add", command=lambda: popAddWin(app)).pack()
-    ttk.Button(sideF, text="Delete").pack()
+    sideF.grid(column=1, row=0, sticky=N)
+    Label(sideF, text="Actions").grid(row=0, ipadx=12, ipady=4)
+    ttk.Button(sideF, text="Add", command=lambda: popAddWin(app)).grid(row=1)
+    ttk.Button(sideF, text="Delete").grid(row=2)
