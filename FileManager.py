@@ -7,7 +7,7 @@ def addRecord(app, isbn, author, title):
         indexSpot = app.AVAIL.pop()
     else:
         tempRecord += "\n"
-    fl.seek(51*indexSpot)
+    fl.seek(52*indexSpot)
     fl.write(tempRecord)
     fl.close()
     app.indexIsbnList.append(["{:0<10}".format(isbn)[:10].strip(), indexSpot])
@@ -25,26 +25,32 @@ def writeToIndexfile(isbnList, titleList):
         fl.write(x[0]+","+str(x[1])+"\n")
     fl.close()
 
-def findRecordByIsbn(isbn):
+def findRecordByIsbn(app, isbn):
     #this is going to change to a index file search
-    fl = open("./data/BookRecords.txt", "r")
-    recordNum = 0
-    while True:
-        temp = fl.readline()
-        if temp[:10] == isbn:
-            print("Record exist")
-            break
-        if temp == "":
-            print("Record doesn't exist")
-            break
-        recordNum += 1
-    fl.close()
+    with open("./data/BookRecords.txt", "r") as fl:
+        for x in app.indexIsbnList:
+            if x[0] == isbn:
+                fl.seek(52 * int(x[1]))
+                line = fl.readline()
+                return [line[:10], line[10:26].strip(), line[26:51].strip()]
+        return None
+
+def findRecordByTitle(app, title):
+    #this is going to change to a index file search
+    with open("./data/BookRecords.txt", "r") as fl:
+        for x in app.indexTitleList:
+            if x[0] == title:
+                fl.seek(52 * int(x[1]))
+                line = fl.readline()
+                return [line[:10], line[10:26].strip(), line[26:51].strip()]
+        return None
+            
+    
 
 def getAllRecords(app):
     fl = open("./data/BookRecords.txt", "r")
     recordNum = 0
     records =[]
-    print(app.AVAIL)
     while True:
         temp = fl.readline()
         if recordNum in app.AVAIL:
@@ -83,10 +89,16 @@ def loadTitleIndexFile():
 def crushRecordFile(app):
     with open("./data/BookRecords.txt", "r") as fl:
         records = fl.readlines()
+    app.indexIsbnList = []
+    app.indexTitleList = []
     with open("./data/BookRecords.txt", "w") as fl:
         lineNum = 0
         for record in records:
             if lineNum not in app.AVAIL:
                 fl.write(record)
+                app.indexIsbnList.append([record[:10], lineNum])
+                app.indexTitleList.append([record[26:51].strip(), lineNum])
             lineNum += 1
+        app.indexIsbnList.sort()
+        app.indexTitleList.sort()
         

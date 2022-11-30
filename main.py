@@ -8,7 +8,7 @@ from Styles import loadStyles
 class app:
     def __init__(self):
         #app data
-        self.selectedRecord = {}
+        self.selectedRecord = None
         self.AVAIL = []
         self.indexIsbnList = loadIsbnIndexFile()
         self.indexTitleList = loadTitleIndexFile()
@@ -19,8 +19,8 @@ class app:
         self.root.columnconfigure(0, weight=1)
         self.root.rowconfigure(0, weight=1)
         def on_closing():
-            writeToIndexfile(self.indexIsbnList, self.indexTitleList)
             crushRecordFile(self)
+            writeToIndexfile(self.indexIsbnList, self.indexTitleList)
             self.root.destroy()
         self.root.protocol("WM_DELETE_WINDOW", on_closing)
 
@@ -50,10 +50,10 @@ class app:
         self.loadRecords()
 
         self.root.mainloop()
-    def loadRecords(self):
+    def loadRecords(self, filterlist = None):
         self.clearRecords()
         def selectRecord(event):
-                if self.selectedRecord != {}:
+                if self.selectedRecord != None:
                     self.selectedRecord["frame"].configure(style="TFrame")
                     for l in self.selectedRecord["frame"].winfo_children():
                         l.configure(style="TLabel")
@@ -64,7 +64,9 @@ class app:
                     bookData.append(l.cget("text"))
                     l.configure(style="selected.TLabel")
                 self.selectedRecord = {"frame":frame, "data": bookData}
-        for book in getAllRecords(self):
+        if filterlist == None:
+            filterlist = getAllRecords(self)
+        for book in filterlist:
             recordBox = ttk.Frame(self.recordContainer, height=20)
             recordBox.pack(fill="x")
             recordBox.bind("<Button-1>", selectRecord)
@@ -77,6 +79,21 @@ class app:
     def clearRecords(self):
         for item in self.recordContainer.winfo_children():
             item.destroy()
+    def searchByIsbn(self, key):
+        self.selectedRecord = None
+        results = findRecordByIsbn(self, key)
+        if results is not None:
+            self.loadRecords([results])
+        else:
+            print("No Record Found")
+
+    def searchByTitle(self, key):
+        self.selectedRecord = None
+        results = findRecordByTitle(self, key)
+        if results is not None:
+            self.loadRecords([results])
+        else:
+            print("No Record Found")
 
 
 if __name__ == "__main__":

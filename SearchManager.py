@@ -1,11 +1,20 @@
 from tkinter import *
 from tkinter import ttk
-from FileManager import findRecordByIsbn
+
+
 
 def placeSearchBar(app):
     def searchFor(data):
-        print("we are looking now! : " + str(data))
-        findRecordByIsbn(data)
+        if data == "":
+            app.loadRecords()
+            app.selectedRecord = None
+            return
+        if data.isnumeric():
+            #this is a ISBN
+            app.searchByIsbn(data)
+        else:
+            #this is a Title
+            app.searchByTitle(data)
     bottomF = Frame(app.root)
     bottomF.grid(column=0, row=1, columnspan=2, sticky=NSEW)
     bottomF.columnconfigure(0, weight=1)

@@ -34,17 +34,17 @@ def seachListByIsbn(list, key):
     return -1
 
 def deleteRecord(app):
-    if app.selectedRecord != {}:
+    if app.selectedRecord != None:
         recordIndex = app.indexIsbnList[seachListByIsbn(app.indexIsbnList, app.selectedRecord["data"][0])][1]
         app.AVAIL.append(recordIndex)
         app.indexIsbnList.remove([app.selectedRecord["data"][0],recordIndex])
         app.indexTitleList.remove([app.selectedRecord["data"][2],recordIndex])
         fl = open("./data/BookRecords.txt", "r+")
-        fl.seek(51 * int(recordIndex))
+        fl.seek(52 * int(recordIndex))
         fl.write('{r:{c}<{n}}'.format(r=recordIndex, n=50, c='-'))
         fl.close()
         app.loadRecords()
-        app.selectedRecord = {}
+        app.selectedRecord = None
     else:
         print("no selected record")
 
