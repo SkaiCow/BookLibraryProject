@@ -1,1 +1,2 @@
-Very Cool Book,0
+new book,1
+older book,2

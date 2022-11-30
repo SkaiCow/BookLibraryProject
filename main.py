@@ -20,6 +20,7 @@ class app:
         self.root.rowconfigure(0, weight=1)
         def on_closing():
             writeToIndexfile(self.indexIsbnList, self.indexTitleList)
+            crushRecordFile(self)
             self.root.destroy()
         self.root.protocol("WM_DELETE_WINDOW", on_closing)
 
@@ -63,7 +64,7 @@ class app:
                     bookData.append(l.cget("text"))
                     l.configure(style="selected.TLabel")
                 self.selectedRecord = {"frame":frame, "data": bookData}
-        for book in getAllRecords():
+        for book in getAllRecords(self):
             recordBox = ttk.Frame(self.recordContainer, height=20)
             recordBox.pack(fill="x")
             recordBox.bind("<Button-1>", selectRecord)
