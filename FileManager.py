@@ -15,6 +15,14 @@ def addRecord(app, isbn, author, title):
     app.indexTitleList.append(["{:<24}".format(title)[:24].strip(), indexSpot])
     app.indexTitleList.sort(key=lambda x: x[0])
 
+def editRecordFile(app, isbn, author, title, index):
+    tempRecord = "{:0<10}".format(isbn)[:10]+"{:<16}".format(author)[:16]+"{:<24}".format(title)[:24]
+    fl = open("./data/BookRecords.txt", "r+")
+    fl.seek(52*index)
+    fl.write(tempRecord)
+    fl.close()
+
+
 def writeToIndexfile(isbnList, titleList):
     fl = open("./data/IndexIsbn.txt", "w")
     for x in isbnList:
@@ -71,7 +79,8 @@ def loadIsbnIndexFile():
         temp = fl.readline()
         if temp == "":
             break
-        indexList.append(temp.strip().split(","))
+        temp = temp.strip().split(",")
+        indexList.append([temp[0], int(temp[1])])
     fl.close()
     return indexList
 
@@ -82,7 +91,8 @@ def loadTitleIndexFile():
         temp = fl.readline()
         if temp == "":
             break
-        indexList.append(temp.strip().split(","))
+        temp = temp.strip().split(",")
+        indexList.append([temp[0], int(temp[1])])
     fl.close()
     return indexList
 
@@ -93,12 +103,13 @@ def crushRecordFile(app):
     app.indexTitleList = []
     with open("./data/BookRecords.txt", "w") as fl:
         lineNum = 0
+        newNum = 0
         for record in records:
             if lineNum not in app.AVAIL:
                 fl.write(record)
-                app.indexIsbnList.append([record[:10], lineNum])
-                app.indexTitleList.append([record[26:51].strip(), lineNum])
+                app.indexIsbnList.append([record[:10], newNum])
+                app.indexTitleList.append([record[26:51].strip(), newNum])
+                newNum += 1
             lineNum += 1
         app.indexIsbnList.sort()
         app.indexTitleList.sort()
-        

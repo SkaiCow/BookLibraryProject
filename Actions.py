@@ -35,7 +35,7 @@ def seachListByIsbn(list, key):
 
 def deleteRecord(app):
     if app.selectedRecord != None:
-        recordIndex = app.indexIsbnList[seachListByIsbn(app.indexIsbnList, app.selectedRecord["data"][0])][1]
+        recordIndex = int(app.indexIsbnList[seachListByIsbn(app.indexIsbnList, app.selectedRecord["data"][0])][1])
         app.AVAIL.append(recordIndex)
         app.indexIsbnList.remove([app.selectedRecord["data"][0],recordIndex])
         app.indexTitleList.remove([app.selectedRecord["data"][2],recordIndex])
